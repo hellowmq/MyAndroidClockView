@@ -1,0 +1,3 @@
+rootProject.name = "Android Clock"
+include ':app'
+//include ':view'
