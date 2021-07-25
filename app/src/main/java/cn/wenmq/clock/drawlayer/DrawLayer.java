@@ -5,7 +5,8 @@ import android.graphics.Canvas;
 import java.util.Calendar;
 
 /**
- *
+ * Draw by layer.
+ * Once call onDraw the view call each layer's onDraw with a certain sequence.
  */
 public interface DrawLayer {
 

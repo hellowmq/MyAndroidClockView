@@ -9,19 +9,20 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import cn.wenmq.clock.CalendarConstants;
 import cn.wenmq.clock.drawlayer.DrawLayer;
 import cn.wenmq.clock.drawlayer.HourDrawLayer;
 import cn.wenmq.clock.drawlayer.MinuteDrawLayer;
 import cn.wenmq.clock.drawlayer.PanelDrawLayer;
 import cn.wenmq.clock.drawlayer.SecondDrawLayer;
+import cn.wenmq.clock.drawlayer.TopCenterDrawLayer;
 
 public class ParticleClockView extends View {
 
-
     public static final int FRAME = 30;
-    public static final int UPDATE_INTERNAL = 1000 / FRAME;
-    List<DrawLayer> mDrawLayers = new ArrayList<>();
-    Calendar mCalendar;
+    public static final int UPDATE_INTERNAL = CalendarConstants.MILLISECOND_PER_SECOND / FRAME;
+    private final List<DrawLayer> mDrawLayers = new ArrayList<>();
+    private Calendar mCalendar;
     private int mBottom;
     private int mTop;
     private int mLeft;
@@ -47,6 +48,7 @@ public class ParticleClockView extends View {
         mDrawLayers.add(new HourDrawLayer());
         mDrawLayers.add(new MinuteDrawLayer());
         mDrawLayers.add(new SecondDrawLayer(true, 0.05f));
+        mDrawLayers.add(new TopCenterDrawLayer());
         mCalendar = Calendar.getInstance();
     }
 
@@ -60,13 +62,10 @@ public class ParticleClockView extends View {
         new Handler().postDelayed(() -> setTime(Calendar.getInstance()), UPDATE_INTERNAL);
     }
 
-
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        final int availW = mRight - mLeft;
-        final int availH = mBottom - mTop;
-        final int drawRect = Math.min(availW, availH);
+        final int drawRect = Math.min(mRight - mLeft, mBottom - mTop);
         final int cX = (mRight + mLeft) >> 1;
         final int cY = drawRect >> 1;
         for (DrawLayer overlay : mDrawLayers) {
